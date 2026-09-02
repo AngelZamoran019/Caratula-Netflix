@@ -34,9 +34,24 @@ button, input { font: inherit; }
   background: #111;
 }
 .editor-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; margin-bottom: 28px; }
+.editor-header-actions { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; flex-shrink: 0; }
 .editor-kicker, .preview-heading > div > span { display: block; color: #8f8f8f; font-size: 10px; font-weight: 800; letter-spacing: 1.5px; }
 .editor-header h1 { margin: 5px 0 0; font-size: 21px; letter-spacing: -.5px; }
 .size-badge, .preview-dimensions { white-space: nowrap; border: 1px solid #343434; border-radius: 999px; padding: 7px 9px; color: #cfcfcf; font-size: 10px; font-weight: 700; }
+.logout-button {
+  min-height: 32px;
+  padding: 0 11px;
+  border: 1px solid #3b3b3b;
+  border-radius: 6px;
+  background: #181818;
+  color: #d7d7d7;
+  cursor: pointer;
+  font-size: 10px;
+  font-weight: 800;
+  transition: background .15s ease, border-color .15s ease, color .15s ease;
+}
+.logout-button:hover { background: #252525; border-color: #555; color: #fff; }
+.logout-button:disabled { cursor: wait; opacity: .55; }
 .editor-section { padding-bottom: 23px; margin-bottom: 23px; border-bottom: 1px solid #252525; }
 .editor-section h2 { margin: 0 0 15px; font-size: 13px; font-weight: 800; }
 .field { display: block; margin-bottom: 13px; }
@@ -145,6 +160,8 @@ button, input { font: inherit; }
   .preview-heading strong { font-size: 9px; }
   .preview-stage { padding: 7px; }
   .preview-canvas-wrap { width: min(100%, calc((52vh - 52px - 14px) * 20.2 / 30.2)); height: min(100%, calc((52vh - 52px - 14px) * 30.2 / 20.2)); }
+  .editor-header-actions { align-items: flex-end; }
+  .logout-button { min-height: 30px; padding: 0 9px; font-size: 9px; }
 }
 
 /* Exportación: 20.2 × 30.2 cm a 300 DPI = 2386 × 3567 px. */
