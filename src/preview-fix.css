@@ -40,19 +40,19 @@
   height: auto;
   min-height: 0;
   flex: none;
-  padding: 2.2cqw 5cqw 2.5cqw;
+  padding: 1.6cqw 5cqw 1.8cqw;
   overflow: hidden;
 }
 
 .history-section h2 {
-  margin: 0 0 2.2cqw;
+  margin: 0 0 1.6cqw;
   font-size: clamp(13px, 3.4cqw, 21px);
   line-height: 1;
 }
 
 .history-grid {
   width: 100%;
-  height: calc(100% - 24px);
+  height: calc(100% - 4.2cqw);
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 1.25cqw;
