@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import html2canvas from "html2canvas";
 import { netflixConfig } from "./config.js";
+import Verification, { VerificationLoading } from "./Verification.jsx";
 
 const EXPORT_WIDTH = 2386;
 const EXPORT_HEIGHT = 3567;
@@ -44,17 +45,70 @@ function NetflixLogo() {
 }
 
 function App() {
+  const [authState, setAuthState] = useState("checking");
   const [project, setProject] = useState(getInitialProject);
   const [exporting, setExporting] = useState(false);
   const canvasRef = useRef(null);
 
   useEffect(() => {
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(project));
-    } catch (error) {
-      console.error("No se pudo guardar el proyecto automáticamente:", error);
+    let active = true;
+
+    async function checkSession() {
+      try {
+        const response = await fetch(
+          "/admin-auth?action=check",
+          {
+            method: "GET",
+            credentials: "include",
+            cache: "no-store",
+          }
+        );
+
+        if (!response.ok) {
+          if (active) setAuthState("login");
+          return;
+        }
+
+        const data = await response.json();
+
+        if (!active) return;
+        setAuthState(
+          data?.authenticated === true
+            ? "authenticated"
+            : "login"
+        );
+      } catch (error) {
+        console.error(
+          "Error comprobando el acceso privado:",
+          error
+        );
+
+        if (active) setAuthState("login");
+      }
     }
-  }, [project]);
+
+    checkSession();
+
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  useEffect(() => {
+    if (authState !== "authenticated") return;
+
+    try {
+      localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify(project)
+      );
+    } catch (error) {
+      console.error(
+        "No se pudo guardar el proyecto automáticamente:",
+        error
+      );
+    }
+  }, [project, authState]);
 
   const updateProject = (key, value) => {
     setProject((current) => ({ ...current, [key]: value }));
@@ -115,6 +169,18 @@ function App() {
       setExporting(false);
     }
   };
+
+  if (authState === "checking") {
+    return <VerificationLoading />;
+  }
+
+  if (authState === "login") {
+    return (
+      <Verification
+        onVerified={() => setAuthState("authenticated")}
+      />
+    );
+  }
 
   return (
     <main className="creator-app">
