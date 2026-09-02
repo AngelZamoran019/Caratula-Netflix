@@ -1,7 +1,4 @@
-/* Corrección definitiva de proporción y escalado.
-   El lienzo físico de salida SIEMPRE es 21.5 × 34 cm.
-   La vista previa usa exactamente la misma relación 21.5:34.
-   No se fuerza una altura porcentual sobre un contenedor cuya altura era auto. */
+/* Lienzo maestro: proporción física exacta 21.5 × 34 cm. */
 
 .preview-canvas-wrap {
   width: min(100%, calc((100vh - 91px - 24px) * 21.5 / 34));
@@ -18,135 +15,124 @@
   min-width: 0;
   min-height: 0;
   margin: 0;
+  padding: 0;
   background: #000;
   overflow: hidden;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-rows: 82fr 18fr;
+  container-type: inline-size;
 }
 
-/* Distribución vertical de la carátula de referencia. */
+/* La distribución vertical se calcula directamente sobre el lienzo,
+   no sobre la ventana del navegador. */
 .hero {
-  height: 82%;
-  flex: 0 0 82%;
+  position: relative;
+  width: 100%;
+  height: auto;
   min-height: 0;
+  flex: none;
+  overflow: hidden;
 }
 
 .history-section {
-  height: 18%;
-  flex: 0 0 18%;
+  position: relative;
+  width: 100%;
+  height: auto;
   min-height: 0;
-  padding: 2.2% 5% 2.5%;
+  flex: none;
+  padding: 2.2cqw 5cqw 2.5cqw;
+  overflow: hidden;
 }
 
 .history-section h2 {
-  margin: 0 0 2.2%;
-  font-size: clamp(15px, 2.25vw, 21px);
+  margin: 0 0 2.2cqw;
+  font-size: clamp(13px, 3.4cqw, 21px);
+  line-height: 1;
 }
 
 .history-grid {
+  width: 100%;
   height: calc(100% - 24px);
-  gap: 1.25%;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 1.25cqw;
 }
 
 .hero-content {
-  left: 5.2%;
-  bottom: 3.2%;
-  width: 72%;
+  left: 5.2cqw;
+  bottom: 3.2cqw;
+  width: 72cqw;
+  max-width: 72%;
 }
 
 .hero-content h1 {
-  font-size: clamp(42px, 6vw, 82px);
+  margin-bottom: 1.7cqw;
+  font-size: clamp(28px, 9cqw, 82px);
+  line-height: .95;
 }
+
+.movie-label,
+.metadata,
+.ranking {
+  font-size: clamp(7px, 2.25cqw, 13px);
+}
+
+.movie-label { margin-bottom: 1cqw; }
+.metadata { gap: 2.25cqw; margin-bottom: 1.7cqw; }
+.ranking { gap: 1.7cqw; margin-bottom: 1.7cqw; }
 
 .synopsis {
-  max-width: 640px;
+  max-width: 100%;
+  margin-bottom: 2.7cqw;
+  font-size: clamp(7px, 2.35cqw, 14px);
+  line-height: 1.4;
 }
 
-/* Desktop/mediano: el lienzo conserva siempre 21.5:34. */
+.hero-actions { gap: 1.2cqw; }
+
+.play-button,
+.secondary-button {
+  min-height: clamp(24px, 6.8cqw, 39px);
+  padding: 0 3.1cqw;
+  gap: 1.4cqw;
+  font-size: clamp(7px, 2.15cqw, 13px);
+}
+
+.reaction-button {
+  width: clamp(24px, 6.8cqw, 39px);
+  height: clamp(24px, 6.8cqw, 39px);
+  font-size: clamp(12px, 3.6cqw, 21px);
+}
+
+.topbar {
+  padding: 2.5cqw 3.8cqw;
+  gap: 4cqw;
+}
+
+.netflix-logo {
+  font-size: clamp(18px, 5cqw, 28px);
+}
+
+.desktop-nav {
+  gap: 3.8cqw;
+  font-size: clamp(7px, 2.3cqw, 13px);
+}
+
+.top-actions { gap: 2cqw; }
+.icon-button { font-size: clamp(15px, 4.2cqw, 26px); }
+.avatar { width: clamp(22px, 5.5cqw, 32px); height: clamp(22px, 5.5cqw, 32px); }
+.chevron { font-size: clamp(13px, 3cqw, 19px); }
+
 @media (max-width: 900px) {
   .preview-canvas-wrap {
     width: min(100%, calc((100vh - 91px - 24px) * 21.5 / 34));
-    height: auto;
   }
 
-  .hero {
-    height: 82%;
-    flex-basis: 82%;
-  }
-
-  .history-section {
-    height: 18%;
-    flex-basis: 18%;
-  }
-
-  .topbar {
-    padding: 2.5% 3.8%;
-  }
-
-  .netflix-logo {
-    font-size: clamp(18px, 3vw, 28px);
-  }
-
-  .hero-content {
-    left: 5.2%;
-    bottom: 3.2%;
-    width: 74%;
-  }
-
-  .hero-content h1 {
-    font-size: clamp(32px, 6vw, 70px);
-  }
-
-  .movie-label,
-  .metadata,
-  .ranking {
-    font-size: clamp(8px, 1.45vw, 13px);
-  }
-
-  .synopsis {
-    font-size: clamp(8px, 1.5vw, 14px);
-    line-height: 1.4;
-    margin-bottom: 2.5%;
-  }
-
-  .play-button,
-  .secondary-button {
-    min-height: clamp(27px, 4vw, 39px);
-    padding: 0 clamp(8px, 1.5vw, 18px);
-    font-size: clamp(8px, 1.35vw, 13px);
-  }
-
-  .reaction-button {
-    width: clamp(27px, 4vw, 39px);
-    height: clamp(27px, 4vw, 39px);
-    font-size: clamp(14px, 2vw, 21px);
-  }
+  .desktop-nav { display: none; }
 }
 
 @media (max-width: 650px) {
   .preview-canvas-wrap {
     width: min(100%, calc((52vh - 52px - 14px) * 21.5 / 34));
-    height: auto;
-  }
-
-  .page-shell {
-    height: auto;
-  }
-
-  .hero {
-    height: 82%;
-    flex-basis: 82%;
-  }
-
-  .history-section {
-    height: 18%;
-    flex-basis: 18%;
-    padding: 2.2% 5% 2.5%;
-  }
-
-  .hero-content {
-    left: 5.2%;
-    bottom: 3.2%;
-    width: 76%;
   }
 }
