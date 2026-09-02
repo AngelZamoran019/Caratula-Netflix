@@ -2,8 +2,8 @@ import { useMemo, useRef, useState } from "react";
 import html2canvas from "html2canvas";
 import { netflixConfig } from "./config.js";
 
-const EXPORT_WIDTH = 2539;
-const EXPORT_HEIGHT = 4016;
+const EXPORT_WIDTH = 2386;
+const EXPORT_HEIGHT = 3567;
 
 function ImageOrPlaceholder({ src, alt, className = "" }) {
   return src ? (
@@ -76,7 +76,7 @@ function App() {
       output.getContext("2d").drawImage(rendered, 0, 0, EXPORT_WIDTH, EXPORT_HEIGHT);
 
       const link = document.createElement("a");
-      link.download = `${project.title || "caratula-netflix"}-21.5x34cm.png`;
+      link.download = `${project.title || "caratula-netflix"}-20.2x30.2cm.png`;
       link.href = output.toDataURL("image/png");
       link.click();
     } catch (error) {
@@ -95,7 +95,7 @@ function App() {
             <span className="editor-kicker">EDITOR</span>
             <h1>Carátula Netflix</h1>
           </div>
-          <span className="size-badge">21.5 × 34 cm</span>
+          <span className="size-badge">20.2 × 30.2 cm</span>
         </div>
 
         <section className="editor-section">
@@ -125,7 +125,7 @@ function App() {
         <div className="editor-footer">
           <div className="export-info">
             <strong>PNG de alta resolución</strong>
-            <span>2539 × 4016 px · proporción 21.5:34</span>
+            <span>2386 × 3567 px · proporción 20.2:30.2</span>
           </div>
           <button className="export-button" onClick={exportPNG} disabled={exporting}>
             {exporting ? "Exportando…" : "Exportar PNG"}
@@ -139,7 +139,7 @@ function App() {
             <span>VISTA PREVIA</span>
             <strong>El diseño que ves es el que se exporta</strong>
           </div>
-          <span className="preview-dimensions">21.5 × 34 cm</span>
+          <span className="preview-dimensions">20.2 × 30.2 cm</span>
         </div>
 
         <div className="preview-stage">
