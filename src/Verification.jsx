@@ -72,13 +72,15 @@ export default function Verification({ onVerified }) {
   return (
     <main className="verification-screen">
       <section className="verification-card">
-        <div className="verification-logo" aria-label="Netflix">
-          <span>Netflix</span>
+        <div className="verification-brand" aria-label="Carátula">
+          <span className="verification-brand-main">CARÁTULA</span>
+          <span className="verification-brand-sub">CREATOR</span>
         </div>
 
         <div className="verification-heading">
-          <h1>Carátula Netflix</h1>
-          <p>Acceso privado</p>
+          <span className="verification-eyebrow">ÁREA PRIVADA</span>
+          <h1>Acceso al editor</h1>
+          <p>Panel privado de creación y administración.</p>
         </div>
 
         <form className="verification-form" onSubmit={handleSubmit}>
@@ -132,9 +134,14 @@ export default function Verification({ onVerified }) {
             type="submit"
             disabled={loading}
           >
-            {loading ? "VERIFICANDO..." : "INICIAR SESIÓN"}
+            {loading ? "VERIFICANDO..." : "ENTRAR AL EDITOR"}
           </button>
         </form>
+
+        <p className="verification-disclaimer">
+          Herramienta privada e independiente. No pertenece ni está afiliada
+          a Netflix ni a otras plataformas de streaming.
+        </p>
       </section>
     </main>
   );
