@@ -1,9 +1,35 @@
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import html2canvas from "html2canvas";
 import { netflixConfig } from "./config.js";
 
 const EXPORT_WIDTH = 2386;
 const EXPORT_HEIGHT = 3567;
+const STORAGE_KEY = "caratula-netflix-project-v1";
+
+function getInitialProject() {
+  const defaults = {
+    title: netflixConfig.title,
+    principalImage: netflixConfig.principalImage,
+    avatar: netflixConfig.avatar,
+    bottomImages: [...netflixConfig.bottomImages],
+  };
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (!saved) return defaults;
+    const parsed = JSON.parse(saved);
+    if (!parsed || typeof parsed !== "object") return defaults;
+    return {
+      title: typeof parsed.title === "string" ? parsed.title : defaults.title,
+      principalImage: typeof parsed.principalImage === "string" ? parsed.principalImage : defaults.principalImage,
+      avatar: typeof parsed.avatar === "string" ? parsed.avatar : defaults.avatar,
+      bottomImages: Array.from({ length: 5 }, (_, index) =>
+        typeof parsed.bottomImages?.[index] === "string" ? parsed.bottomImages[index] : (defaults.bottomImages[index] || "")
+      ),
+    };
+  } catch {
+    return defaults;
+  }
+}
 
 function ImageOrPlaceholder({ src, alt, className = "" }) {
   return src ? (
@@ -18,14 +44,17 @@ function NetflixLogo() {
 }
 
 function App() {
-  const [project, setProject] = useState(() => ({
-    title: netflixConfig.title,
-    principalImage: netflixConfig.principalImage,
-    avatar: netflixConfig.avatar,
-    bottomImages: [...netflixConfig.bottomImages],
-  }));
+  const [project, setProject] = useState(getInitialProject);
   const [exporting, setExporting] = useState(false);
   const canvasRef = useRef(null);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(project));
+    } catch (error) {
+      console.error("No se pudo guardar el proyecto automáticamente:", error);
+    }
+  }, [project]);
 
   const updateProject = (key, value) => {
     setProject((current) => ({ ...current, [key]: value }));
