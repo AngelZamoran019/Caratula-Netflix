@@ -6,6 +6,11 @@
   background: #000;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
+  --canvas-width: 21.5cm;
+  --canvas-height: 34cm;
+  --canvas-ratio: 21.5 / 34;
+  --export-width-px: 2539px;
+  --export-height-px: 4016px;
 }
 
 * { box-sizing: border-box; }
@@ -15,16 +20,19 @@ body { background: #000; }
 button { font: inherit; }
 
 .page-shell {
-  min-height: 100vh;
+  width: min(100%, var(--canvas-width));
+  min-height: var(--canvas-height);
+  margin: 0 auto;
   background: #000;
   overflow-x: hidden;
 }
 
 .hero {
   position: relative;
-  min-height: 760px;
-  height: 92vh;
-  max-height: 1050px;
+  width: 100%;
+  aspect-ratio: var(--canvas-ratio);
+  min-height: 0;
+  height: auto;
   overflow: hidden;
   isolation: isolate;
   background: linear-gradient(160deg, #1bff46 0%, #0a9e28 42%, #001f0b 100%);
@@ -41,8 +49,7 @@ button { font: inherit; }
 .hero-image { object-fit: cover; object-position: center top; display: block; }
 
 .image-placeholder {
-  background:
-    radial-gradient(circle at 50% 20%, rgba(69,255,93,.95) 0, rgba(18,190,55,.85) 25%, rgba(3,84,21,.88) 58%, #001306 100%);
+  background: radial-gradient(circle at 50% 20%, rgba(69,255,93,.95) 0, rgba(18,190,55,.85) 25%, rgba(3,84,21,.88) 58%, #001306 100%);
 }
 
 .hero-overlay {
@@ -66,15 +73,7 @@ button { font: inherit; }
   padding: 22px 34px;
 }
 
-.netflix-logo {
-  color: #e50914;
-  font-size: 28px;
-  line-height: 1;
-  font-weight: 900;
-  letter-spacing: -1.7px;
-  text-shadow: 0 1px 4px rgba(0,0,0,.4);
-}
-
+.netflix-logo { color: #e50914; font-size: 28px; line-height: 1; font-weight: 900; letter-spacing: -1.7px; text-shadow: 0 1px 4px rgba(0,0,0,.4); }
 .desktop-nav { display: flex; gap: 22px; font-size: 13px; font-weight: 600; }
 .desktop-nav span:first-child { font-weight: 800; }
 .top-actions { margin-left: auto; display: flex; align-items: center; gap: 12px; }
@@ -84,24 +83,9 @@ button { font: inherit; }
 .top-actions .image-placeholder.avatar { background: #1ee747; }
 .chevron { font-size: 19px; margin-left: -6px; }
 
-.hero-content {
-  position: absolute;
-  z-index: 2;
-  left: 6%;
-  bottom: 7%;
-  width: min(520px, 88%);
-}
-
+.hero-content { position: absolute; z-index: 2; left: 6%; bottom: 7%; width: min(520px, 88%); }
 .movie-label { font-size: 13px; font-weight: 800; letter-spacing: 1px; margin-bottom: 6px; }
-.hero-content h1 {
-  margin: 0 0 10px;
-  font-family: "Great Vibes", cursive;
-  font-size: clamp(50px, 8vw, 88px);
-  line-height: .95;
-  font-weight: 400;
-  text-shadow: 0 3px 14px rgba(0,0,0,.55);
-}
-
+.hero-content h1 { margin: 0 0 10px; font-family: "Great Vibes", cursive; font-size: clamp(50px, 8vw, 88px); line-height: .95; font-weight: 400; text-shadow: 0 3px 14px rgba(0,0,0,.55); }
 .metadata { display: flex; align-items: center; gap: 13px; font-size: 13px; font-weight: 700; margin-bottom: 10px; }
 .age { border: 1px solid rgba(255,255,255,.65); padding: 1px 4px; border-radius: 2px; }
 .ranking { display: flex; gap: 10px; align-items: center; font-size: 13px; margin-bottom: 10px; }
@@ -121,7 +105,8 @@ button { font: inherit; }
 .story-card .image-placeholder { position: absolute; }
 
 @media (max-width: 700px) {
-  .hero { min-height: 720px; height: 88vh; }
+  .page-shell { width: 100%; min-height: 0; }
+  .hero { width: 100%; aspect-ratio: 21.5 / 34; }
   .topbar { padding: 17px 18px; gap: 13px; }
   .netflix-logo { font-size: 24px; }
   .desktop-nav { display: none; }
@@ -141,6 +126,10 @@ button { font: inherit; }
   .story-card { min-width: 92px; }
 }
 
-@media (min-width: 1200px) {
-  .hero-content { left: 8%; }
-}
+@media (min-width: 1200px) { .hero-content { left: 8%; } }
+
+/*
+  Exportación PNG:
+  El lienzo lógico siempre conserva 21.5 x 34 cm.
+  A 300 DPI equivale a 2539 x 4016 px (redondeado).
+*/
