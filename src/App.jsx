@@ -48,6 +48,7 @@ function App() {
   const [authState, setAuthState] = useState("checking");
   const [project, setProject] = useState(getInitialProject);
   const [exporting, setExporting] = useState(false);
+  const [loggingOut, setLoggingOut] = useState(false);
   const canvasRef = useRef(null);
 
   useEffect(() => {
@@ -123,6 +124,31 @@ function App() {
     }));
   };
 
+  const handleLogout = async () => {
+    if (loggingOut) return;
+
+    setLoggingOut(true);
+
+    try {
+      const response = await fetch("/admin-auth?action=logout", {
+        method: "POST",
+        credentials: "include",
+        cache: "no-store",
+      });
+
+      if (!response.ok) {
+        throw new Error(`Logout failed with status ${response.status}`);
+      }
+
+      setAuthState("login");
+    } catch (error) {
+      console.error("No se pudo cerrar la sesión:", error);
+      window.alert("No se pudo cerrar la sesión. Inténtalo de nuevo.");
+    } finally {
+      setLoggingOut(false);
+    }
+  };
+
   const fields = useMemo(() => [
     { key: "principalImage", label: "Foto principal", placeholder: "https://..." },
     { key: "avatar", label: "Foto avatar", placeholder: "https://..." },
@@ -190,7 +216,17 @@ function App() {
             <span className="editor-kicker">EDITOR</span>
             <h1>Carátula Netflix</h1>
           </div>
-          <span className="size-badge">20.2 × 30.2 cm</span>
+          <div className="editor-header-actions">
+            <span className="size-badge">20.2 × 30.2 cm</span>
+            <button
+              className="logout-button"
+              type="button"
+              onClick={handleLogout}
+              disabled={loggingOut}
+            >
+              {loggingOut ? "Saliendo…" : "Cerrar sesión"}
+            </button>
+          </div>
         </div>
 
         <section className="editor-section">
